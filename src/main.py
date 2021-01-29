@@ -6,13 +6,19 @@ import pprint
 # 正解が太字になっていないものがある
 # 問題文と解答には一行空白がある（逆もしかり）
 
+# ?what is class Excel → excel file get text
+
 
 class Execl:
+    # ToDo cell自動取得によるテキスト抽出
     def __init__(self, file_path):
         self.excel_obj = None
         self.file_path = file_path
         self.excel_path = None
-        self.question = []
+        self.sheet_range = [["C1", "D2040"], ["A1", "B1310"]]
+        # self.sheet_range = []
+        self.text = []
+        self.sheet_count = None
 
     def _GetFileExcelPath(self):
         with open(self.file_path, mode="r", encoding="utf-8") as f:
@@ -20,14 +26,25 @@ class Execl:
 
     def _GetExcelFile(self):
         self.excel_obj = openpyxl.load_workbook(self.excel_path)
-        # print(self.excel_obj.sheetnames)
+        #  cell番号自動取得
+        # for i in range(len(self.excel_obj.sheetnames)):
+        #     temp = [self.excel_obj.worksheets[i].max_row,
+        #             self.excel_obj.worksheets[i].max_column]
+        # self.sheet_range.append(temp)
+        self.sheet_count = len(self.excel_obj.sheetnames)
 
-    def _ExcelGetCell(self):
-        sheet = self.excel_obj.worksheets[0]
-        for cols in sheet.iter_cols(min_row=1, min_col=3, max_row=2040):
-            for cell in cols:
-                if cell.value is not None:
-                    print(cell.row, cell.value)
+    def _ExcelGetCell(self, index=0):
+        sheet = self.excel_obj.worksheets[index]
+        cell = sheet[self.sheet_range[index][0]:self.sheet_range[index][1]]
+        for i, (c, d) in enumerate(cell):
+            if c.value is not None or d.value is not None:
+                tc = c.value if c.value is not None else ""
+                td = d.value if d.value is not None else ""
+                # print(i + 1, tc + td)
+                self.text.append([i, tc + td, c, d])
+        print(len(self.text))
+
+# ?what is class Question → question management
 
 
 class Question:
@@ -70,6 +87,13 @@ class Question:
         else:
             self.answer_flag = True
 
+# ?what is class AWSCloudPractitioner → aws management
+
+
+class AWSCloudPractitioner:
+    def __init__(self, text_list):
+        self.untreated_text_list = text_list
+
 
 def cd():
     import os
@@ -82,5 +106,6 @@ if __name__ == "__main__":
     ex._GetFileExcelPath()
     # print(ex.excel_path)
     ex._GetExcelFile()
-    ex._ExcelGetCell()
+    for i in range(ex.sheet_count):
+        ex._ExcelGetCell(i)
     # pprint.pprint(ex.excel_obj)
