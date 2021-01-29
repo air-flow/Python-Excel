@@ -7,6 +7,7 @@ class Execl:
         self.excel_obj = None
         self.file_path = file_path
         self.excel_path = None
+        self.question = []
 
     def _GetFileExcelPath(self):
         with open(self.file_path, mode="r", encoding="utf-8") as f:
@@ -24,13 +25,17 @@ class Execl:
                     print(cell.row, cell.value)
 
 
+class Question:
+    def __init__(self):
+        self.no = None
+        self.q = None
+        self.a = []
+        self.problem = []
+
+
 def cd():
     import os
     os.chdir(os.path.dirname(__file__))
-
-
-def test():
-    wb = openpyxl.load_workbook("Sample.xlsx")
 
 
 if __name__ == "__main__":
