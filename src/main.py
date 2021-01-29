@@ -1,6 +1,11 @@
 import openpyxl
 import pprint
 
+# 問題文が複数行に渡り記述してある
+# 解答が問題文と列がずれているものがある
+# 正解が太字になっていないものがある
+# 問題文と解答には一行空白がある（逆もしかり）
+
 
 class Execl:
     def __init__(self, file_path):
@@ -28,9 +33,42 @@ class Execl:
 class Question:
     def __init__(self):
         self.no = None
-        self.q = None
+        self.q = ""
         self.a = []
         self.problem = []
+        self.row = None
+        self.col = None
+        self.answer_flag = None  # 正解が設定されているか判定
+
+    def _SetQuestion(self, text):
+        if text is not None:
+            self.q += text
+
+    def _SetAnswer(self, text):
+        if text is not None:
+            self.a.append(text)
+
+    def _SetProblem(self, text):
+        if text is not None:
+            self.problem.append(text)
+
+    def _SetRow(self, row):
+        if row is not None:
+            self.row = row
+
+    def _SetCol(self, col):
+        if col is not None:
+            self.col = col
+
+    def _SetNo(self, no):
+        if no is not None:
+            self.no = no
+
+    def _CheckAnswerCount(self):
+        if len(self.a) < 1:
+            self.answer_flag = False
+        else:
+            self.answer_flag = True
 
 
 def cd():
