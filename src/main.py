@@ -1,6 +1,6 @@
 import openpyxl
 import pprint
-
+import re
 # 問題文が複数行に渡り記述してある
 # 解答が問題文と列がずれているものがある
 # 正解が太字になっていないものがある
@@ -91,8 +91,31 @@ class Question:
 
 
 class AWSCloudPractitioner:
+
     def __init__(self, text_list):
         self.untreated_text_list = text_list
+        self.question_list = []
+        self.question_Definition = {"q": "", "a": "^[a-zA-Z][.]"}
+        # self.reorganization_list = None
+
+    def _Reorganization_Question_List(self):
+        question_flag = False
+        for i in self.untreated_text_list:
+            q = Question()
+            # 問題文判定
+            if not self._CheckProblemText(i[1]):
+                while self._CheckProblemText(i[1]):
+                    pass
+            else:
+                question_flag = False
+
+    def _CheckProblemText(self, text, juge="a"):
+        pattern = self.question_Definition[juge]
+        matchOB = re.match(pattern, text)
+        if matchOB:
+            return True
+        else:
+            return False
 
 
 def cd():
@@ -102,10 +125,15 @@ def cd():
 
 if __name__ == "__main__":
     cd()
-    ex = Execl("../mine/path.txt")
-    ex._GetFileExcelPath()
-    # print(ex.excel_path)
-    ex._GetExcelFile()
-    for i in range(ex.sheet_count):
-        ex._ExcelGetCell(i)
-    # pprint.pprint(ex.excel_obj)
+    # ex = Execl("../mine/path.txt")
+    # ex._GetFileExcelPath()
+    # ex._GetExcelFile()
+    # for i in range(ex.sheet_count):
+    #     ex._ExcelGetCell(i)
+    pattern = "ca"
+    text = "caabsacasca"
+    matchOB = re.match(pattern, text)
+    if matchOB:
+        print(True)
+    else:
+        print(False)
