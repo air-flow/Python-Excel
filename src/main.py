@@ -40,9 +40,9 @@ class Execl:
             if c.value is not None or d.value is not None:
                 tc = c.value if c.value is not None else ""
                 td = d.value if d.value is not None else ""
-                # print(i + 1, tc + td)
-                self.text.append([i, tc + td, c, d])
-        print(len(self.text))
+                set_cell = c if c.value is not None else d
+                self.text.append([i, tc + td, set_cell])
+        # print(len(self.text))
 
 # ?what is class Question → question management
 
@@ -99,15 +99,24 @@ class AWSCloudPractitioner:
         # self.reorganization_list = None
 
     def _Reorganization_Question_List(self):
-        question_flag = False
+        # question_flag = False
+        add_flag = False
+        answer_flag = False
+        q = Question()
         for i in self.untreated_text_list:
-            q = Question()
             # 問題文判定
             if not self._CheckProblemText(i[1]):
-                while self._CheckProblemText(i[1]):
-                    pass
+                if answer_flag:
+                    add_flag = True
+                    continue
+                q.q += self._CheckProblemText(i[1])
             else:
-                question_flag = False
+                answer_flag = True
+                q.a.append(self._CheckProblemText(i[1]))
+            if add_flag:
+                self.question_list.append(q)
+                q = Question()
+                q.q += self._CheckProblemText(i[1])
 
     def _CheckProblemText(self, text, juge="a"):
         pattern = self.question_Definition[juge]
@@ -125,15 +134,19 @@ def cd():
 
 if __name__ == "__main__":
     cd()
-    # ex = Execl("../mine/path.txt")
-    # ex._GetFileExcelPath()
-    # ex._GetExcelFile()
+    ex = Execl("../mine/path.txt")
+    ex._GetFileExcelPath()
+    ex._GetExcelFile()
+    ex._ExcelGetCell(0)
+    # print(len(ex.text))
+    aws = AWSCloudPractitioner(ex.text)
+    aws._Reorganization_Question_List()
     # for i in range(ex.sheet_count):
     #     ex._ExcelGetCell(i)
-    pattern = "ca"
-    text = "caabsacasca"
-    matchOB = re.match(pattern, text)
-    if matchOB:
-        print(True)
-    else:
-        print(False)
+    # pattern = "ca"
+    # text = "caabsacasca"
+    # matchOB = re.match(pattern, text)
+    # if matchOB:
+    #     print(True)
+    # else:
+    #     print(False)
