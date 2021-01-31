@@ -1,5 +1,5 @@
 import openpyxl
-import pprint
+# import pprint
 import re
 import random
 # 問題文が複数行に渡り記述してある
@@ -164,7 +164,7 @@ if __name__ == "__main__":
     ex = Execl("../mine/path.txt")
     ex._GetFileExcelPath()
     ex._GetExcelFile()
-    ex._ExcelGetCell(0)
+    # ex._ExcelGetCell(0)
     for i in range(ex.sheet_count):
         ex._ExcelGetCell(i)
     # print(len(ex.text))
