@@ -1,6 +1,7 @@
 import openpyxl
 import pprint
 import re
+import random
 # 問題文が複数行に渡り記述してある
 # 解答が問題文と列がずれているものがある
 # 正解が太字になっていないものがある
@@ -87,6 +88,19 @@ class Question:
         else:
             self.answer_flag = True
 
+    def _QuestionResultPrint(self):
+        print("-"*10)
+        print(self.no + 1, "問題目")
+        print(self.q)
+        # pprint.pprint(self.a)
+        print("選択肢")
+        for i in self.a:
+            print(i)
+        print("-" * 10)
+        # print(self.q)
+        # print(self.q)
+        # print(self.q)
+
 # ?what is class AWSCloudPractitioner → aws management
 
 
@@ -108,15 +122,18 @@ class AWSCloudPractitioner:
             if not self._CheckProblemText(i[1]):
                 if answer_flag:
                     add_flag = True
-                    continue
-                q.q += self._CheckProblemText(i[1])
+                else:
+                    q.q += i[1]
             else:
                 answer_flag = True
-                q.a.append(self._CheckProblemText(i[1]))
+                q.a.append(i[1])
             if add_flag:
+                add_flag = False
+                answer_flag = False
+                q.no = len(self.question_list)
                 self.question_list.append(q)
                 q = Question()
-                q.q += self._CheckProblemText(i[1])
+                q.q += i[1]
 
     def _CheckProblemText(self, text, juge="a"):
         pattern = self.question_Definition[juge]
@@ -138,15 +155,15 @@ if __name__ == "__main__":
     ex._GetFileExcelPath()
     ex._GetExcelFile()
     ex._ExcelGetCell(0)
+    for i in range(ex.sheet_count):
+        ex._ExcelGetCell(i)
     # print(len(ex.text))
     aws = AWSCloudPractitioner(ex.text)
     aws._Reorganization_Question_List()
-    # for i in range(ex.sheet_count):
-    #     ex._ExcelGetCell(i)
-    # pattern = "ca"
-    # text = "caabsacasca"
-    # matchOB = re.match(pattern, text)
-    # if matchOB:
-    #     print(True)
-    # else:
-    #     print(False)
+    # print(len(aws.question_list))
+    # for i in range(10):
+    #     print(i, "番目", ex.text[i])
+
+    for i in range(3):
+        temp = random.choice(aws.question_list)
+        temp._QuestionResultPrint()
