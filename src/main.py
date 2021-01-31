@@ -88,13 +88,22 @@ class Question:
         else:
             self.answer_flag = True
 
+    def _CheckBold(self, cell, text):
+        flag = cell.font.bold
+        flag = False if flag is None else flag
+        if flag:
+            self._SetProblem(text)
+
     def _QuestionResultPrint(self):
-        print("-"*10)
+        print("-" * 10)
         print(self.no + 1, "問題目")
         print(self.q)
         # pprint.pprint(self.a)
         print("選択肢")
         for i in self.a:
+            print(i)
+        print("正解")
+        for i in self.problem:
             print(i)
         print("-" * 10)
         # print(self.q)
@@ -126,11 +135,12 @@ class AWSCloudPractitioner:
                     q.q += i[1]
             else:
                 answer_flag = True
+                q._CheckBold(i[2], i[1])
                 q.a.append(i[1])
             if add_flag:
                 add_flag = False
                 answer_flag = False
-                q.no = len(self.question_list)
+                q._SetNo(len(self.question_list))
                 self.question_list.append(q)
                 q = Question()
                 q.q += i[1]
