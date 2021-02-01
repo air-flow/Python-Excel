@@ -110,18 +110,22 @@ class Question:
     def _QuestionPrint(self):
         self._HaihunPrint(str(self.no + 1) + "問")
         print(self.question)
+        # print("\n")
 
     def _AnswerPrint(self):
         self._HaihunPrint("選択肢")
         for i in self.choices:
-            print(i)
+            print(i.replace("\n", ""))
+        self._HaihunPrint("解答入力")
 
     def _ProblemPrint(self):
         self._HaihunPrint("正解")
         for i in self.answer:
             print(i)
+        self._HaihunPrint("")
 
     def _HaihunPrint(self, text="問題"):
+        # print("\n")
         temp = "-" * 5
         print(temp, text, temp)
 
@@ -135,10 +139,11 @@ class AWSCloudPractitioner:
         self.question_list = []
         # 出題問題オブジェクト、選択解答
         self.setting_question = []
+        self.mode = True
         self.question_Definition = {"q": "", "a": "^[a-zA-Z][.]"}
         # self.reorganization_list = None
 
-    def _Reorganization_Question_List(self):
+    def _ReorganizationQuestionList(self):
         # question_flag = False
         add_flag = False
         answer_flag = False
@@ -178,9 +183,29 @@ class AWSCloudPractitioner:
             if temp.choices_flag:
                 temp._QuestionPrint()
                 temp._AnswerPrint()
-                temp._ProblemPrint()
+                # temp._ProblemPrint()
+                select["choices"] = self._InputUserAnswer()
+                self._PrintAnswerJuge(temp)
             else:
                 print("answer not set error")
+            self.setting_question.append(select)
+
+    def _InputUserAnswer(self):
+        print("解答を選択してください")
+        print("a, A, 1 のどれでも可")
+        print("複数選択肢は「,」、「.」のどちらかで")
+        user_answer = input()
+        while True:
+            if len(user_answer) > 0:
+                break
+            else:
+                print("選択肢を入力してください。")
+            user_answer = input()
+        return user_answer
+
+    def _PrintAnswerJuge(self, question):
+        if self.mode:
+            question._ProblemPrint()
 
 
 def cd():
@@ -188,8 +213,7 @@ def cd():
     os.chdir(os.path.dirname(__file__))
 
 
-if __name__ == "__main__":
-    cd()
+def main():
     ex = Execl("../mine/path.txt")
     ex._GetFileExcelPath()
     ex._GetExcelFile()
@@ -198,13 +222,19 @@ if __name__ == "__main__":
         ex._ExcelGetCell(i)
     # print(len(ex.text))
     aws = AWSCloudPractitioner(ex.text)
-    aws._Reorganization_Question_List()
+    aws._ReorganizationQuestionList()
+    # print(aws.question_list[0])
     # print(len(aws.question_list))
     # for i in range(10):
     #     print(i, "番目", ex.text[i])
+    aws._MockExamination(3)
+    # for i in range(3):
+    #     temp = random.choice(aws.question_list)
+    #     temp._QuestionPrint()
+    #     temp._AnswerPrint()
+    #     temp._ProblemPrint()
 
-    for i in range(3):
-        temp = random.choice(aws.question_list)
-        temp._QuestionPrint()
-        temp._AnswerPrint()
-        temp._ProblemPrint()
+
+if __name__ == "__main__":
+    cd()
+    main()
