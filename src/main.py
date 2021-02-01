@@ -223,8 +223,9 @@ class AWSCloudPractitioner:
             answer = self._ReplaceAnswerList(answer_list)
             choice = i["choices"].replace(".", "").replace(",", "")
             choice = list(self._ReplaceAlphabetString(choice))
-            answer = self._SortListAlphabet(answer)
-            choice = self._SortListAlphabet(choice)
+            self._SortListAlphabet(answer)
+            self._SortListAlphabet(choice)
+            # print(answer, choice, " debug")
             if answer == choice:
                 self.number_of_correct_answers += 1
         self._QuestionResult()
@@ -245,7 +246,10 @@ class AWSCloudPractitioner:
         number = list(map(str, list(range(1, 10))))
         d = dict(zip(number, alphabet))
         # print(s.translate(str.maketrans(d)))
-        return text.translate(str.maketrans(d))
+        result = []
+        for i in text:
+            result.append(i.translate(str.maketrans(d)))
+        return result
 
     def _SortListAlphabet(self, sort_list):
         return sort_list.sort()
@@ -268,9 +272,9 @@ def main():
     # print(len(aws.question_list))
     # for i in range(10):
     #     print(i, "番目", ex.text[i])
-    # aws._MockExamination(1)
+    aws._MockExamination(3)
     # print(aws.question_list[210].choices_flag)
-    aws._CheckAnswerSreach()
+    # aws._CheckAnswerSreach()
     # for i in range(3):
     #     temp = random.choice(aws.question_list)
     #     temp._QuestionPrint()
@@ -296,7 +300,7 @@ def test():
 
 if __name__ == "__main__":
     cd()
-    test()
-    # main()
+    # test()
+    main()
     # pprint.pprint(d)
     # print(alphabet, number)
