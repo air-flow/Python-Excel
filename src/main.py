@@ -16,7 +16,7 @@ class Execl:
         self.excel_obj = None
         self.file_path = file_path
         self.excel_path = None
-        self.sheet_range = [["C1", "D2040"], ["A1", "B1310"]]
+        self.sheet_range = [["C1", "D139"], ["A1", "B1310"]]
         # self.sheet_range = []
         self.text = []
         self.sheet_count = None
@@ -83,7 +83,7 @@ class Question:
             self.no = no
 
     def _CheckAnswerCount(self):
-        if len(self.choices) > 0:
+        if len(self.answer) >= 1:
             self.choices_flag = True
         else:
             self.choices_flag = False
@@ -179,7 +179,7 @@ class AWSCloudPractitioner:
 
     def _CheckProblemText(self, text, juge="a"):
         pattern = self.question_Definition[juge]
-        matchOB = re.match(pattern, text)
+        matchOB = re.match(pattern, text.strip())
         if matchOB:
             return True
         else:
@@ -278,8 +278,22 @@ def main():
     #     temp._ProblemPrint()
 
 
+def test():
+    ex = Execl("../mine/path.txt")
+    ex._GetFileExcelPath()
+    ex._GetExcelFile()
+    # for i in range(ex.sheet_count):
+    ex._ExcelGetCell(0)
+    aws = AWSCloudPractitioner(ex.text)
+    aws._ReorganizationQuestionList()
+    for i in aws.question_list:
+        pprint.pprint(i._QuestionResultPrint())
+    # pprint.pprint(aws.question_list._QuestionResultPrint())
+
+
 if __name__ == "__main__":
     cd()
-    main()
+    test()
+    # main()
     # pprint.pprint(d)
     # print(alphabet, number)
