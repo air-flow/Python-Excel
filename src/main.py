@@ -16,7 +16,7 @@ class Execl:
         self.excel_obj = None
         self.file_path = file_path
         self.excel_path = None
-        self.sheet_range = [["C1", "D139"], ["A1", "B1310"]]
+        self.sheet_range = [["C1", "D2050"], ["A1", "B1310"]]
         # self.sheet_range = []
         self.text = []
         self.sheet_count = None
@@ -96,15 +96,15 @@ class Question:
 
     def _QuestionResultPrint(self):
         print("-" * 10)
-        print(self.no + 1, "問題目")
+        print(self.no + 1, "問")
         print(self.question)
         # pprint.pprint(self.choices)
         print("選択肢")
         for i in self.choices:
             print(i)
         print("正解")
-        for i in self.answer:
-            print(i)
+        # for i in self.answer:
+        #     print(i)
         print("-" * 10)
 
     def _QuestionPrint(self):
@@ -146,11 +146,11 @@ class AWSCloudPractitioner:
         # self.reorganization_list = None
 
     def _CheckAnswerSreach(self):
-        # print(len(self.question_list))
         # print(self.question_list[209]._QuestionResultPrint())
         for i in self.question_list:
             if not i.choices_flag:
                 i._QuestionResultPrint()
+        print(len(self.question_list))
 
     def _ReorganizationQuestionList(self):
         # question_flag = False
@@ -269,7 +269,7 @@ def main():
     # for i in range(10):
     #     print(i, "番目", ex.text[i])
     # aws._MockExamination(1)
-    print(aws.question_list[210].choices_flag)
+    # print(aws.question_list[210].choices_flag)
     aws._CheckAnswerSreach()
     # for i in range(3):
     #     temp = random.choice(aws.question_list)
@@ -282,12 +282,15 @@ def test():
     ex = Execl("../mine/path.txt")
     ex._GetFileExcelPath()
     ex._GetExcelFile()
-    # for i in range(ex.sheet_count):
-    ex._ExcelGetCell(0)
+    for i in range(ex.sheet_count):
+        ex._ExcelGetCell(i)
     aws = AWSCloudPractitioner(ex.text)
     aws._ReorganizationQuestionList()
+    # print(len(aws.question_list))
+    # print(aws.question_list[0]._QuestionResultPrint())
     for i in aws.question_list:
-        pprint.pprint(i._QuestionResultPrint())
+        if not i.choices_flag:
+            pprint.pprint(i._QuestionResultPrint())
     # pprint.pprint(aws.question_list._QuestionResultPrint())
 
 
