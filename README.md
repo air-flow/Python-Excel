@@ -2,8 +2,6 @@
 
 EXCEL operations in Python
 
-https://qiita.com/yH3PO4/items/bba3a14ed366081274e6
-
 ## DEMO
 
 main.py 実行
@@ -30,3 +28,5 @@ git clone https://github.com/air-flow/Python-Excel.git
 ## Note
 
 ## Works Cited
+
+https://qiita.com/yH3PO4/items/bba3a14ed366081274e6

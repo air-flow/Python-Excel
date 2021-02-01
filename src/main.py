@@ -51,24 +51,24 @@ class Execl:
 class Question:
     def __init__(self):
         self.no = None
-        self.q = ""
-        self.a = []
-        self.problem = []
+        self.question = ""
+        self.choices = []
+        self.answer = []
         self.row = None
         self.col = None
-        self.answer_flag = None  # 正解が設定されているか判定
+        self.choices_flag = None  # 正解が設定されているか判定
 
     def _SetQuestion(self, text):
         if text is not None:
-            self.q += text
+            self.question += text
 
     def _SetAnswer(self, text):
         if text is not None:
-            self.a.append(text)
+            self.choices.append(text)
 
     def _SetProblem(self, text):
         if text is not None:
-            self.problem.append(text)
+            self.answer.append(text)
 
     def _SetRow(self, row):
         if row is not None:
@@ -83,10 +83,10 @@ class Question:
             self.no = no
 
     def _CheckAnswerCount(self):
-        if len(self.a) < 1:
-            self.answer_flag = False
+        if len(self.choices) < 1:
+            self.choices_flag = False
         else:
-            self.answer_flag = True
+            self.choices_flag = True
 
     def _CheckBold(self, cell, text):
         flag = cell.font.bold
@@ -97,27 +97,44 @@ class Question:
     def _QuestionResultPrint(self):
         print("-" * 10)
         print(self.no + 1, "問題目")
-        print(self.q)
-        # pprint.pprint(self.a)
+        print(self.question)
+        # pprint.pprint(self.choices)
         print("選択肢")
-        for i in self.a:
+        for i in self.choices:
             print(i)
         print("正解")
-        for i in self.problem:
+        for i in self.answer:
             print(i)
         print("-" * 10)
-        # print(self.q)
-        # print(self.q)
-        # print(self.q)
+
+    def _QuestionPrint(self):
+        self._HaihunPrint(str(self.no + 1) + "問")
+        print(self.question)
+
+    def _AnswerPrint(self):
+        self._HaihunPrint("選択肢")
+        for i in self.choices:
+            print(i)
+
+    def _ProblemPrint(self):
+        self._HaihunPrint("正解")
+        for i in self.answer:
+            print(i)
+
+    def _HaihunPrint(self, text="問題"):
+        temp = "-" * 5
+        print(temp, text, temp)
+
 
 # ?what is class AWSCloudPractitioner → aws management
-
 
 class AWSCloudPractitioner:
 
     def __init__(self, text_list):
         self.untreated_text_list = text_list
         self.question_list = []
+        # 出題問題オブジェクト、選択解答
+        self.setting_question = []
         self.question_Definition = {"q": "", "a": "^[a-zA-Z][.]"}
         # self.reorganization_list = None
 
@@ -132,18 +149,19 @@ class AWSCloudPractitioner:
                 if answer_flag:
                     add_flag = True
                 else:
-                    q.q += i[1]
+                    q.question += i[1]
             else:
                 answer_flag = True
                 q._CheckBold(i[2], i[1])
-                q.a.append(i[1])
+                q.choices.append(i[1])
             if add_flag:
                 add_flag = False
                 answer_flag = False
                 q._SetNo(len(self.question_list))
+                q._CheckAnswerCount()
                 self.question_list.append(q)
                 q = Question()
-                q.q += i[1]
+                q.question += i[1]
 
     def _CheckProblemText(self, text, juge="a"):
         pattern = self.question_Definition[juge]
@@ -152,6 +170,17 @@ class AWSCloudPractitioner:
             return True
         else:
             return False
+
+    def _MockExamination(self, count=10):
+        for i in range(count):
+            temp = random.choice(self.question_list)
+            select = {"obj": temp, "choices": None}
+            if temp.choices_flag:
+                temp._QuestionPrint()
+                temp._AnswerPrint()
+                temp._ProblemPrint()
+            else:
+                print("answer not set error")
 
 
 def cd():
@@ -176,4 +205,6 @@ if __name__ == "__main__":
 
     for i in range(3):
         temp = random.choice(aws.question_list)
-        temp._QuestionResultPrint()
+        temp._QuestionPrint()
+        temp._AnswerPrint()
+        temp._ProblemPrint()
