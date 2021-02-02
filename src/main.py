@@ -146,14 +146,12 @@ class AWSCloudPractitioner:
         # self.reorganization_list = None
 
     def _CheckAnswerSreach(self):
-        # print(self.question_list[209]._QuestionResultPrint())
         for i in self.question_list:
             if not i.choices_flag:
                 i._QuestionResultPrint()
         print(len(self.question_list))
 
     def _ReorganizationQuestionList(self):
-        # question_flag = False
         add_flag = False
         answer_flag = False
         q = Question()
@@ -268,18 +266,8 @@ def main():
         ex._ExcelGetCell(i)
     aws = AWSCloudPractitioner(ex.text)
     aws._ReorganizationQuestionList()
-    # print(aws.question_list[0])
-    # print(len(aws.question_list))
-    # for i in range(10):
-    #     print(i, "番目", ex.text[i])
-    aws._MockExamination(3)
-    # print(aws.question_list[210].choices_flag)
+    aws._MockExamination(3)  # 解答件数
     # aws._CheckAnswerSreach()
-    # for i in range(3):
-    #     temp = random.choice(aws.question_list)
-    #     temp._QuestionPrint()
-    #     temp._AnswerPrint()
-    #     temp._ProblemPrint()
 
 
 def test():
@@ -290,17 +278,14 @@ def test():
         ex._ExcelGetCell(i)
     aws = AWSCloudPractitioner(ex.text)
     aws._ReorganizationQuestionList()
-    # print(len(aws.question_list))
-    # print(aws.question_list[0]._QuestionResultPrint())
     for i in aws.question_list:
         if not i.choices_flag:
             pprint.pprint(i._QuestionResultPrint())
-    # pprint.pprint(aws.question_list._QuestionResultPrint())
 
 
 if __name__ == "__main__":
     cd()
     # test()
-    main()
+    main()  # 模擬試験モード
     # pprint.pprint(d)
     # print(alphabet, number)
