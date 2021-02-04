@@ -1,3 +1,9 @@
+import openpyxl
+# import pprint
+# import re
+# import random
+
+
 class Execl:
     # ToDo cell自動取得によるテキスト抽出
     def __init__(self, file_path):

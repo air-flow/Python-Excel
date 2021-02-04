@@ -1,3 +1,9 @@
+# import openpyxl
+# import pprint
+import re
+import random
+
+
 class AWSCloudPractitioner:
 
     def __init__(self, text_list):

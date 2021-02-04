@@ -266,7 +266,7 @@ def main():
         ex._ExcelGetCell(i)
     aws = AWSCloudPractitioner(ex.text)
     aws._ReorganizationQuestionList()
-    aws._MockExamination(3)  # 解答件数
+    aws._MockExamination()  # 解答件数
     # aws._CheckAnswerSreach()
 
 

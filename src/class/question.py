@@ -1,3 +1,9 @@
+# import openpyxl
+# import pprint
+# import re
+# import random
+
+
 class Question:
     def __init__(self):
         self.no = None
@@ -78,4 +84,3 @@ class Question:
         # print("\n")
         temp = "-" * 5
         print(temp, text, temp)
-
